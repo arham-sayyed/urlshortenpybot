@@ -1,1 +1,1 @@
-worker: python simp.py
+worker: python urlshortener.py
