@@ -6,7 +6,7 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-updater = Updater("5764653780:AAF4b-Mv6WY-dZsXRDfVPZ2ALouG0uMg_OY",
+updater = Updater("5764653780:AAFu3Di1CuO6ukfO9NO93gTkVddF4uEA0q0",
 				use_context=True)
 
 
