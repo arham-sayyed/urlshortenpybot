@@ -20,7 +20,7 @@ job_done_animate = [ 'https://media.tenor.com/CW3dv0a1Hf4AAAAM/mission-complete-
 errors_animate = [ 'https://media.tenor.com/qeS6BuiV_08AAAAM/baby-punch.gif' , 'https://media.tenor.com/ACy8YfHUofwAAAAM/fail-robot.gif' , 'https://media.tenor.com/z0rwZrP0ylwAAAAM/elize-ryd-amaranthe.gif' , 'https://media.tenor.com/OxvVRFnPZO8AAAAM/error-the-simpsons.gif' , 'https://media3.giphy.com/media/U8MnmuVDpK264/giphy.gif?cid=ecf05e47jbqxbkogaulkdfrmkp8b3l52q9yld9q5sprgs4ed&rid=giphy.gif&ct=g','https://media0.giphy.com/media/L4BK799epTvSsNXSjr/giphy.gif?cid=790b7611da0f184e9b4da0ef7a46414be3123d8fbd0fb131&rid=giphy.gif&ct=s' , 'https://media3.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=790b76113c378884712a8d4baaeb747c7d2bbdff8ad8be8b&rid=giphy.gif&ct=g' , 'https://external-preview.redd.it/MNcyuoDrG3VvGINMxwbsNb7spDTtCcKkaRu4poc7fKI.gif?format=mp4&s=b450aa23274d29781538bf4faf2dd316734af32e'] 
 
 
-shorting = """update.message.reply_text(str(shortener.%s.short(link))) """
+shorting = """ update.message.reply_text(str(shortener.%s.short(link))) """
 
 # expanding = """update.message.reply_text(str(shortener.%s.expand(link))) """
 
@@ -30,7 +30,7 @@ def start(update: Update, context: CallbackContext):
 		data = update.message.from_user
 		user_name = data['username']
 		if user_name == None:
-			user_name = "You"
+			user_name = str(data['first_name'])
 		else:
 			pass
 		update.message.reply_animation(animation = str(random.choice(welcome_animate)) , caption = (str(random.choice(welcome_messages)) %user_name))
