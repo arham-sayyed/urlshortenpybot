@@ -1,4 +1,4 @@
-import pyshorteners , random 
+import pyshorteners , random , validators
 from time import time , ctime
 from telegram.ext.updater import Updater
 from telegram.update import Update
@@ -10,77 +10,141 @@ updater = Updater("5764653780:AAFu3Di1CuO6ukfO9NO93gTkVddF4uEA0q0",
 				use_context=True)
 
 
-modules = ['chilpit' , 'tinyurl' , 'clckru' , 'dagd' , 'isgd']
-
-welcome_animate = ['https://media.tenor.com/5hKPyupKGWMAAAAC/robot-hello.gif' , 'https://media.tenor.com/axrso9GQCKkAAAAC/robot-talk.gif' , 'https://media1.giphy.com/media/Nc2slkPLPdpmWeCUZc/giphy.gif?cid=ecf05e47de8ebqw9pl62zc3bwbsw7ik5kf814dy638fq6ux2&rid=giphy.gif&ct=g'] 
-welcome_messages = ['Heyaaaa!!!! %s ' , "Hi! %s I am a Bot! I'll help you Deal with URLs " , 'I Welcomes %s' , 'Hi! %s' , 'Hello Mr/Ms %s']
 loaders = [ 'https://media.tenor.com/PlT4DtiUuvYAAAAM/i-get-the-job-done-cat.gif' , 'https://64.media.tumblr.com/f678ce38eb896bc1d4aaa911958af087/tumblr_n2eccv6Dev1rgpzseo1_1280.gif' , 'https://i.pinimg.com/originals/bf/34/61/bf34611d89cb4e9e62fc4997a1d329f2.gif' , 'https://miro.medium.com/max/720/1*3zTTejN8RKtodF2pkycGow.gif' , 'https://miro.medium.com/max/720/1*kWggO1y6n1sdfGpxZaAAGA.gif', 'https://images.squarespace-cdn.com/content/v1/54e2089fe4b0cc0f0867f658/1427813547778-UMUV7CWR2XT7D0HVQG5R/BikerBot.gif' , 'https://cdn.dribbble.com/users/1129235/screenshots/3017888/robo-1_1.gif' , 'https://i.pinimg.com/originals/b0/05/10/b0051024e16fb23cefe70c8499e76664.gif' , 'https://bugfender.com/wp-content/uploads/2018/10/automated.gif']
-loading_messeges = ['HangOn 🍻! Until I Deal with URL.... 😎' , 'Cutting URL!.... ' ,  'Collecting resources....' , 'Getting algorithm ready.... ' , 'Validating URL.... ' , 'Getting Server Ready....'] 
-job_done_animate = [ 'https://media.tenor.com/CW3dv0a1Hf4AAAAM/mission-complete-spongebob.gif' ,  'https://c.tenor.com/OfvU2xH4EpkAAAAM/thumbs-up-good-job.gif' , 'https://media.tenor.com/IAUvvrUY7zQAAAAM/done-spongebob.gif' , 'https://monzo.com/static/images/blog/2017-09-29-android-engineers/dude.gif' , 'https://media3.giphy.com/media/dup8JTRGfu41esoibk/giphy.gif?cid=790b76117f502aae5b58cdae7c83f506a0a08b5c9c54b4a9&rid=giphy.gif&ct=g']  
-errors_animate = [ 'https://media.tenor.com/qeS6BuiV_08AAAAM/baby-punch.gif' , 'https://media.tenor.com/ACy8YfHUofwAAAAM/fail-robot.gif' , 'https://media.tenor.com/z0rwZrP0ylwAAAAM/elize-ryd-amaranthe.gif' , 'https://media.tenor.com/OxvVRFnPZO8AAAAM/error-the-simpsons.gif' , 'https://media3.giphy.com/media/U8MnmuVDpK264/giphy.gif?cid=ecf05e47jbqxbkogaulkdfrmkp8b3l52q9yld9q5sprgs4ed&rid=giphy.gif&ct=g','https://media0.giphy.com/media/L4BK799epTvSsNXSjr/giphy.gif?cid=790b7611da0f184e9b4da0ef7a46414be3123d8fbd0fb131&rid=giphy.gif&ct=s' , 'https://media3.giphy.com/media/8L0Pky6C83SzkzU55a/giphy.gif?cid=790b76113c378884712a8d4baaeb747c7d2bbdff8ad8be8b&rid=giphy.gif&ct=g' , 'https://external-preview.redd.it/MNcyuoDrG3VvGINMxwbsNb7spDTtCcKkaRu4poc7fKI.gif?format=mp4&s=b450aa23274d29781538bf4faf2dd316734af32e'] 
-
-
-shorting = """ update.message.reply_text(str(shortener.%s.short(link))) """
-
-# expanding = """update.message.reply_text(str(shortener.%s.expand(link))) """
 
 
 def start(update: Update, context: CallbackContext):
-	try:
-		data = update.message.from_user
-		user_name = data['username']
-		if user_name == None:
-			user_name = str(data['first_name'])
-		else:
-			pass
-		update.message.reply_animation(animation = str(random.choice(welcome_animate)) , caption = (str(random.choice(welcome_messages)) %user_name))
-		update.message.reply_text("You Can Just Send The Url You Wanna Shorten or Expand 😉")
-		
-	except Exception as error_message:
-		print("You have to fix: %s in /start" %error_message)
-		update.message.reply_animation(animation = random.choice(errors_animate) , caption = str("Oops! 🥴 An Error Occured: %s Please Do me a favour by reporting error to Developer @Arhamsayyed") %error_message )
+    name = str(update.message.from_user["first_name"])
+    # ---logging---
+    print(update.message.from_user.username , update.message.chat.first_name , update.message.chat_id , update.message.text)
+    file = open("logfile.txt" , "a")
+    current_DateTime = time()
+    file.write("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat.first_name) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
+    file.close()
+    #  ---logging ends---
+    update.message.reply_text(f"Hello {name}! You Can Send Me any url And I will shorten it Or Even Expand it if it is already Shortened!")
+
+
+def send(update: Update, context: CallbackContext):
+    user_link = str(update.message.text)
+    # ---logging---
+    print(update.message.from_user.username , update.message.chat.first_name , update.message.chat_id , update.message.text)
+    file = open("logfile.txt" , "a")
+    current_DateTime = time()
+    file.write("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat.first_name) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
+    file.close()
+    #  ---logging ends---
+    loading = update.message.reply_animation(animation = str(random.choice(loaders)) , caption = str(f"Converting Url: {user_link}"))
+    is_valid = validators.url(user_link)
+
+    if is_valid == True:
+        compute = deal(user_link)
+        if not compute == False:
+            try:
+                update.message.reply_text(str(f" Your New Url Is Here: `{compute}` ,\n ↑ Click To Copy ↑ "), disable_web_page_preview=True, parse_mode='MarkdownV2')
+                context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
+
+            except Exception as Error_in_send:
+                print(f"Error in send: {Error_in_send}")
+                update.message.reply_text((f"Error in sending: {Error_in_send}"))
+                context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
+
+        else:
+            update.message.reply_text("Compute returned False! There is an error, Please Report To Developer @arhamSayyed ")
+            print("Compute returned False")
+            context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
+    else:
+        update.message.reply_html(str(f""" The Url You provided: {user_link} is not a Valid Url! Please Check Format:
+        
+'google' --> Malformed
+'google.com' --> Malformed
+'http://google' --> Malformed
+<b>'http://google.com' --> Valid </b>
+
+ """), disable_web_page_preview=True)
+        context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
+
+    
+
+
+
+def help(update: Update, context: CallbackContext):
+    update.message.reply_text("""
+    
+Format:        
+'google' --> Malformed
+'google.com' --> Malformed
+'http://google' --> Malformed
+'http://google.com' --> Valid""")
+    # ---logging---
+    print(update.message.from_user.username , update.message.chat.first_name , update.message.chat_id , update.message.text)
+    file = open("logfile.txt" , "a")
+    current_DateTime = time()
+    file.write("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat.first_name) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
+    file.close()
+    #  ---logging ends---
 
 
 
 
-def deal(update: Update, context: CallbackContext):
-    if len(update.message.text)  < 4000:
-        loading = update.message.reply_animation(animation = str(random.choice(loaders)) , caption = str(random.choice(loading_messeges)))
+
+
+def deal(link):
+
+    try:
+
+        shortener = pyshorteners.Shortener()
+        shortened_URL = shortener.tinyurl.short(link)
+        return shortened_URL
+    except Exception as error:
+        print(f"Error in deal --> shortening: {error}")
+
         try:
             shortener = pyshorteners.Shortener()
-            link = str(update.message.text)
-            exec(shorting %random.choice(modules))
-            update.message.reply_animation( animation = str(random.choice(job_done_animate)) , caption = str("Done!"))
-            context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
-            current_DateTime = time()
-            print("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
-        
-        except:
-            shortener = pyshorteners.Shortener()
-            link = str(update.message.text)
-            try:
-                update.message.reply_text(shortener.chilpit.expand(link))
-            except:
-                try:
-                    update.message.reply_text(shortener.tinyurl.expand(link))
-                except:
-                    try:
-                        update.message.reply_text(shortener.clckru.expand(link))
-                    except:
-                        try:
-                            update.message.reply_text(shortener.dagd.expand(link))
-                        except:
-                            update.message.reply_text(shortener.isgd.expand(link))
-            update.message.reply_animation( animation = str(random.choice(job_done_animate)) , caption = str("Done!"))
-            context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
-            current_DateTime = time()
-            print("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
+            expanded_URL = shortener.tinyurl.expand(link)
+            return expanded_URL
+        except Exception as error:
+            print(f"Error in deal --> expanding: {error}")
 
 
-    else:
-        context.bot.delete_message(message_id = loading.message_id , chat_id = update.message.chat_id)
-        update.message.reply_sticker("😬")
-        update.message.reply_animation(animation = random.choice(errors_animate) , caption = str("Uhh ohh too long url! "))
+
+
+def donate(update: Update, context: CallbackContext):
+    update.message.reply_html(
+str(f"""
+<b> Thanks A lot {update.message.chat.first_name} For Even Thinking Of Donating! </b>
+"""))
+    update.message.reply_photo ( photo="https://i.postimg.cc/s2L6tny7/share-image7285879562483283294.png" , caption="You Can Send Money On This QR Or If You Want Send it to This UPI ID: `arhamsayyed.famc@idfcbank` " , parse_mode='MarkdownV2')
+    # ---logging---
+    print(update.message.from_user.username , update.message.chat.first_name , update.message.chat_id , update.message.text)
+    file = open("logfile.txt" , "a")
+    current_DateTime = time()
+    file.write("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat.first_name) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
+    file.close()
+    #  ---logging ends---
+
+
+
+
+def contact(update: Update, context: CallbackContext):
+    update.message.reply_html(
+str(f"""
+Hello {update.message.chat.first_name},
+I am <b> @ArhamSayyed </b>
+I am an enthusiast in <a href='https://en.wikipedia.org/wiki/Python_(programming_language)'> python programming </a> &  <a href='https://www.opc-router.com/what-is-a-telegram-bot/'> telegram bot </a> development 
+I am a Student, Ready to <a href = 'https://t.me/Arhamsayyed'> Freelance </a>
+And if you Want you can \n /BuyCoffee for me
+
+""") ,
+
+ disable_web_page_preview=True)
+     # ---logging---
+    print(update.message.from_user.username , update.message.chat.first_name , update.message.chat_id , update.message.text)
+    file = open("logfile.txt" , "a")
+    current_DateTime = time()
+    file.write("[" + str(ctime(current_DateTime)) + "]: " + str(update.message.from_user.username) + " " + str(update.message.chat.first_name) + " " + str(update.message.chat_id) + " " + str(update.message.text + "\n"))
+    file.close()
+    #  ---logging ends---
 
 
 
@@ -90,10 +154,12 @@ def deal(update: Update, context: CallbackContext):
 
 
 updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.dispatcher.add_handler(CommandHandler('BuyCoffee', donate))
+updater.dispatcher.add_handler(CommandHandler('contact', contact))
+updater.dispatcher.add_handler(CommandHandler('help', help))
 
 
-
-updater.dispatcher.add_handler(MessageHandler(Filters.text, deal))
+updater.dispatcher.add_handler(MessageHandler(Filters.text, send))
 
 
 updater.start_polling()
