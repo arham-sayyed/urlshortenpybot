@@ -6,7 +6,7 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-updater = Updater("5764653780:AAFu3Di1CuO6ukfO9NO93gTkVddF4uEA0q0",
+updater = Updater("ENV.API_KEY",
 				use_context=True)
 
 
